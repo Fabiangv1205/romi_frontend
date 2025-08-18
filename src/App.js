@@ -1,25 +1,49 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import NavBar from "./components/NavBar";
+import LoginRegister from "./pages/LoginRegister";
+import AdminUsers from "./pages/AdminUsers";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { useAuth } from "./contexts/AuthContext";
+import UserHome from "./pages/UserPage";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+function RedirectIfAuth({ children }) {
+  const { isAuth, isAdmin } = useAuth();
+  if (isAuth) return <Navigate to={isAdmin ? "/admin" : "/user"} replace />;
+  return children;
 }
 
-export default App;
+function HomeRedirect() {
+  const { isAuth, isAdmin } = useAuth();
+  if (!isAuth) return <Navigate to="/auth" replace />;
+  return <Navigate to={isAdmin ? "/admin" : "/user"} replace />;
+}
+
+export default function App() {
+  return (
+    <>
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<HomeRedirect />} />
+
+        <Route
+          path="/auth"
+          element={
+            <RedirectIfAuth>
+              <LoginRegister />
+            </RedirectIfAuth>
+          }
+        />
+        <Route element={<ProtectedRoute roles={["admin"]} />}>
+          <Route path="/admin" element={<AdminUsers />} />
+        </Route>
+
+        <Route element={<ProtectedRoute roles={["user"]} />}>
+          <Route path="/user" element={<UserHome />} />
+        </Route>
+
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </>
+  );
+}
