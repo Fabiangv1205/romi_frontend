@@ -51,10 +51,13 @@ export default function LoginRegister() {
           component="img"
           src="/ROMO.png"
           alt="ROMI"
-          sx={{ height: 70, display: "block", mx: "auto", mb: 1 }}
+          sx={{ height: 80, display: "block", mx: "auto", mb: 1 }}
         />
         <Typography variant="body2" color="text.secondary" sx={{ mb: 2, textAlign: "center" }}>
           Inicia sesión o crea tu cuenta
+        </Typography>
+         <Typography variant="body2" color="text.secondary" sx={{ mb: 2, textAlign: "center" }}>
+          Ingresar como admin: fabian@fabian.com 123456789
         </Typography>
 
         <Tabs value={tab} onChange={(_, v) => setTab(v)} variant="fullWidth" sx={{ mb: 2 }}>

@@ -5,7 +5,7 @@ import LoginRegister from "./pages/LoginRegister";
 import AdminUsers from "./pages/AdminUsers";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { useAuth } from "./contexts/AuthContext";
-import UserHome from "./pages/UserPage";
+import UserHome from "./pages/UserHome";
 
 function RedirectIfAuth({ children }) {
   const { isAuth, isAdmin } = useAuth();
